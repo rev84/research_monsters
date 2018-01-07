@@ -50,7 +50,8 @@ class SkillBase
      */
     protected function _attack($amount, MonsterBase $myMonsterObject, MonsterBase $opMonsterObject)
     {
-        $opMonsterObject->hp -= $amount + $this->plusAttack;
+        Util::log('ダメージ：'.$amount.($this->plusAttack > 0 ? '[+'.$this->plusAttack.']' : ''));
+        $opMonsterObject->damage($amount + $this->plusAttack);
         return true;
     }
     
@@ -62,6 +63,7 @@ class SkillBase
      */
     protected function _heal($amount, MonsterBase $myMonsterObject, MonsterBase $opMonsterObject)
     {
+        Util::log('回復：'.$amount);
         $myMonsterObject->hp += $amount;
         return true;
     }
@@ -74,6 +76,7 @@ class SkillBase
      */
     protected function _suicide($amount, MonsterBase $myMonsterObject, MonsterBase $opMonsterObject)
     {
+        Util::log('自傷：'.$amount.($this->plusAttack > 0 ? '[+'.$this->plusAttack.']' : ''));
         $myMonsterObject->hp -= $amount + $this->plusAttack;
         return true;
     }
@@ -85,6 +88,7 @@ class SkillBase
      */
     protected function _miss(MonsterBase $myMonsterObject, MonsterBase $opMonsterObject)
     {
+        Util::log('ミス');
         return true;
     }
     
@@ -97,20 +101,9 @@ class SkillBase
      */
     protected function _buffAttack($amount, MonsterBase $myMonsterObject, MonsterBase $opMonsterObject)
     {
+        Util::log('攻撃力上昇：'.$amount);
         $this->plusAttack += $amount;
         return true;
-    }
-    
-    /**
-     * 必殺をセット
-     * @param SkillBase $skillClass
-     * @param MonsterBase $myMonsterObject
-     * @param MonsterBase $opMonsterObject
-     */
-    protected function _specialSkill(SkillBase $skillClass, MonsterBase $myMonsterObject, MonsterBase $opMonsterObject)
-    {
-        $skillObj = new $skillClass();
-        return $skillObj;
     }
     
     /**
@@ -129,6 +122,6 @@ class SkillBase
     
     protected function log($dice)
     {
-        Util::log($this->names[$dice-1].'をおこなった');
+        Util::log('「'.$this->names[$dice-1].'」');
     }
 }

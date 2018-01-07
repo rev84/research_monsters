@@ -12,10 +12,14 @@ class MonsterBase
     public $hpMax = null;
     // 現在のHP
     public $hp = null;
-    // 技セット
+    // 技セットのクラス
+    public $skillClass = null;
+    // 技セットのインスタンス
     public $skill = null;
     // 現在の状態異常
     public $status = null;
+    // 特殊効果
+    public $specialEffect = null;
     
     public function __construct($hp = null)
     {
@@ -37,11 +41,24 @@ class MonsterBase
          * ステータスのデフォルト
          ***********************************/
         $this->status = new StatusNo();
+        
+        /***********************************
+         * 技のデフォルト
+         ***********************************/
+        $this->skill = new $this->skillClass();
+        
+        /***********************************
+         * 特殊効果
+         ***********************************/
+        $this->specialEffect = new SpecialEffect();
     }
     
     public function play($opponentObject)
     {
         $baseDice = Util::dice();
+        
+        // 特殊効果解消
+        $this->specialEffect->remove(SpecialEffect::ITEM_INSTANT_NO_DAMAGE);
         
         // ステータス異常実行
         $this->playStatus($baseDice);
@@ -65,6 +82,19 @@ class MonsterBase
         $this->status->play($dice, $this);
     }
     
+    /**
+     * ダメージを与える汎用関数
+     * @param type $amount
+     */
+    public function damage($amount)
+    {
+        // 無効系の特殊効果があれば無効にする
+        if ($this->specialEffect->has(SpecialEffect::ITEM_INSTANT_NO_DAMAGE)) {
+            return false;
+        }
+        $this->hp -= $amount;
+    }
+    
     public function getName()
     {
         return $this->name;
@@ -72,6 +102,10 @@ class MonsterBase
     
     public function getCapture()
     {
-        return $this->name.' | [HP]'.$this->hp.' / '.$this->hpMax;
+        // 特殊効果の出力
+        $specialEffects = $this->specialEffect->dump();
+        if (!empty($specialEffects)) $specialEffects = '('.$specialEffects.')';
+        
+        return $this->name.$specialEffects.' | [HP]'.$this->hp.' / '.$this->hpMax;
     }
 }

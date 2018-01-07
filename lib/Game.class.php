@@ -18,7 +18,7 @@ class Game
         $this->setFirst($first);
         
         // ぐるぐる回していく
-        $this->runLoop();
+        //$this->fight();
     }
     
     /**
@@ -34,6 +34,7 @@ class Game
             $seed = $first;
         }
         $this->now0 = $seed == 0;
+        Util::log('■■■■■■■■■■■■■■■■■■■■■■');
         Util::log('先攻は'.$this->monsters[$seed]->getName());
     }
     
@@ -46,7 +47,7 @@ class Game
      * 決着がつくまでやる
      * @return type
      */
-    public function runLoop()
+    public function fight()
     {
         // 現状を書き込み
         $this->logCapture();
@@ -57,6 +58,8 @@ class Game
         
         // 勝敗報告
         Util::log($this->monsters[$isEnd]->getName().'の勝ち');
+        // 返す
+        return $isEnd;
     }
     
     /**
@@ -64,14 +67,13 @@ class Game
      */
     public function run()
     {
-        $monster = $this->now0 ? $this->monsters[0] : $this->monsters[1];
-        Util::log($monster->getName().'のターン');
+        $myMonster = $this->now0 ? $this->monsters[0] : $this->monsters[1];
+        $opMonster = $this->now0 ? $this->monsters[1] : $this->monsters[0];
+        Util::log('-------------------------------------');
+        Util::log($myMonster->getName().'のターン');
         
         // 行動
-        $monster->play();
-        
-        // 現状を書き込み
-        $this->logCapture();
+        $myMonster->play($opMonster);
         
         // 勝敗判定
         $isEnd = $this->checkEnd();
@@ -79,6 +81,9 @@ class Game
         // ターン入れ替え
         $this->changeFirst();
         $this->turn++;
+        // 現状を書き込み
+        $this->logCapture();
+        
         
         // 結果を返す
         return $isEnd;
@@ -102,11 +107,11 @@ class Game
         }
         // 0が死んでいて1が生きている
         if ($monster0isDead && !$monster1isDead) {
-            return 0;
+            return 1;
         }
         // 1が死んでいて0が生きている
         elseif (!$monster0isDead && $monster1isDead) {
-            return 1;
+            return 0;
         }
         // どっちも死んでいる
         else {

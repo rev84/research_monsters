@@ -39,4 +39,14 @@ class Util
             file_put_contents($filepath, $str."\n", FILE_APPEND);
         }
     }
+
+    /**
+     * 標準出力に出す
+     * @param type $str
+     */
+    public static function pl($str)
+    {
+        echo mb_convert_encoding($str."\n", 'Shift_JIS', 'UTF-8');
+    }
+    
 }

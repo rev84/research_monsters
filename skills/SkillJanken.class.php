@@ -20,7 +20,7 @@ class SkillJanken extends SkillBase
      * @param type $opMonsterObject
      * @return boolean
      */
-    public function play($dice, $myMonsterObject, $opMonsterObject)
+    public function play($dice, MonsterBase $myMonsterObject, MonsterBase $opMonsterObject)
     {
         parent::play($dice, $myMonsterObject, $opMonsterObject);
 

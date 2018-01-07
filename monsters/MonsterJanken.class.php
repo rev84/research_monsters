@@ -11,4 +11,6 @@ class MonsterJanken extends MonsterBase
     public $name = 'ジャン・ケン';
     // 初期HP
     public $hpMax = 100;
+    // 技セット
+    public $skillClass = SkillJanken::class;
 }

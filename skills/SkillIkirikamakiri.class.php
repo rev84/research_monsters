@@ -20,7 +20,7 @@ class SkillIkirikamakiri extends SkillBase
      * @param type $opMonsterObject
      * @return boolean
      */
-    public function play($dice, $myMonsterObject, $opMonsterObject)
+    public function play($dice, MonsterBase $myMonsterObject, MonsterBase $opMonsterObject)
     {
         parent::play($dice, $myMonsterObject, $opMonsterObject);
         
@@ -30,7 +30,7 @@ class SkillIkirikamakiri extends SkillBase
                 return $this->_attack(10, $myMonsterObject, $opMonsterObject);
             // ガチギレですわ
             case 2:
-                return $this->_buff(20, $myMonsterObject, $opMonsterObject);
+                return $this->_buffAttack(20, $myMonsterObject, $opMonsterObject);
             // はりがね先輩チッス！
             case 3:
                 return $this->_miss($myMonsterObject, $opMonsterObject);

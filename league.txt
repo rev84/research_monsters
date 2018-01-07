@@ -1,0 +1,3 @@
+MonsterIkirikamakiri	MonsterJanken	40128	59872
+MonsterIkirikamakiri	MonsterMajuHomerun	61444	38556
+MonsterJanken	MonsterMajuHomerun	65112	34888

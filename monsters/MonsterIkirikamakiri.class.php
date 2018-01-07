@@ -10,4 +10,6 @@ class MonsterIkirikamakiri extends MonsterBase
     public $name = 'イキリカマキリ';
     // 初期HP
     public $hpMax = 110;
+    // 技セット
+    public $skillClass = SkillIkirikamakiri::class;
 }
