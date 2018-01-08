@@ -60,12 +60,14 @@ class MonsterBase
         // 技を実行
         $specialSkill = $this->skill->play($baseDice, $this, $opponentObject);
         // 必殺があればそれも実行
-        if ($specialSkill instanceof SkillBase) {
-            $specialSkill->play(Util::dice(), $this, $opponentObject, false);
+        while ($specialSkill instanceof SkillBase) {
+            $nextSpecialSkill = $specialSkill->play(Util::dice(), $this, $opponentObject, false);
             // 必殺の結果、バフが積まれればそれを反映
             if ($specialSkill->plusAttack > 0) {
                 $this->skill->plusAttack += $specialSkill->plusAttack;
             }
+            
+            $specialSkill = $nextSpecialSkill;
         }
         
         // 特殊効果解消

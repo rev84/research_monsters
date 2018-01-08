@@ -3,7 +3,7 @@
 require_once dirname(__FILE__).'/autoload.php';
 
 doLeague();
-//doTest(MonsterNightchan::class);
+//doTest(MonsterImodora::class);
 
 function doLeague()
 {
@@ -19,6 +19,8 @@ function doLeague()
         MonsterMadoka::class,
         MonsterNazoegg::class,
         MonsterNightchan::class,
+        MonsterImodora::class,
+        //MonsterNormal::class,
     ]);
     outputLeague();
 }
@@ -51,7 +53,7 @@ function doTest($testClass)
 
 function generateLeague($classes)
 {
-    $battleCount = 100000;
+    $battleCount = 10000;
     
     // 既存の計算結果を読み込む
     $res = [];
@@ -128,7 +130,27 @@ function outputLeague()
     $monstersKeys = array_keys($monsters);
     var_dump($monstersKeys);
     
-    $html = '<table border="1"><tr><th></th>';
+    $html = <<<EOM
+<style>
+td {
+    font-size: 150%;
+    font-weight: bold;
+    text-align: center;
+    vertical-align: middle;
+}
+.win {
+    background-color: #ffffff;
+    color: #000000;
+}
+.lose {
+    background-color: #000000;
+    color: #ffffff;
+}
+</style>
+<table border="1">
+    <tr>
+        <th></th>
+EOM;
     foreach ($monstersKeys as $name) {
         $japName = (new $name())->getName();
         $html .= '<th>'.$japName.'</th>';
@@ -155,13 +177,13 @@ function outputLeague()
             }
             
             if ($win > $lose) {
-                $html .= '<td>○<br>'.sprintf('%.1f', $win / ($win+$lose) * 100).'%</td>';
+                $html .= '<td class="win">'.sprintf('%.1f', $win / ($win+$lose) * 100).'%</td>';
             }
             elseif ($win < $lose) {
-                $html .= '<td>●<br>'.sprintf('%.1f', $win / ($win+$lose) * 100).'%</td>';
+                $html .= '<td class="lose">'.sprintf('%.1f', $win / ($win+$lose) * 100).'%</td>';
             }
             else {
-                $html .= '<td>△<br>'.sprintf('%.1f', $win / ($win+$lose) * 100).'%</td>';
+                $html .= '<td>△</td>';
             }
         }
     }
