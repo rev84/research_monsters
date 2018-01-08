@@ -21,21 +21,12 @@ class MonsterBase
     // 特殊効果
     public $specialEffect = null;
     
-    public function __construct($hp = null)
+    public function __construct()
     {
         /***********************************
          * HP処理
          ***********************************/
-        // HPは初生成なら最大まで
-        if (is_null($hp)) {
-            $this->hp = $this->hpMax;
-        }
-        // 変身などでの遷移なら維持
-        else {
-            $this->hp = (int)$hp;
-        }
-        // HPすりきり
-        if ($this->hp > $this->hpMax) $this->hp = $this->hpMax;
+        $this->hp = $this->hpMax;
         
         /***********************************
          * ステータスのデフォルト
@@ -95,6 +86,16 @@ class MonsterBase
         $this->hp -= $amount;
     }
     
+    /**
+     * 回復する汎用関数
+     * @param type $amount
+     */
+    public function heal($amount)
+    {
+        $this->hp += $amount;
+        $this->hpCap();
+    }
+    
     public function getName()
     {
         return $this->name;
@@ -107,5 +108,15 @@ class MonsterBase
         if (!empty($specialEffects)) $specialEffects = '('.$specialEffects.')';
         
         return $this->name.$specialEffects.' | [HP]'.$this->hp.' / '.$this->hpMax;
+    }
+    
+    public function hpCap($hpMax = null)
+    {
+        if (!is_null($hpMax)) {
+            $this->hpMax = $hpMax;
+        }
+        
+        // HPすりきり
+        if ($this->hp > $this->hpMax) $this->hp = $this->hpMax;
     }
 }

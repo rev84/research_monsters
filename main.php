@@ -2,38 +2,51 @@
 
 require_once dirname(__FILE__).'/autoload.php';
 
-// ログを詳細に出すか
-define('IS_LOG', false);
+doLeague();
+//doTest(MonsterNazoegg::class);
 
-Util::logClear();
+function doLeague()
+{
+    // ログを詳細に出すか
+    define('IS_LOG', false);
 
-
-generateLeague([
-    MonsterIkirikamakiri::class,
-    MonsterJanken::class,
-    MonsterMajuHomerun::class,
-]);
-outputLeague();
-
-/*
-$monster0Win = 0;
-
-for ($index = 0; $index < 100000; $index++) {
-    $monster0 = new MonsterJanken();
-    $monster1 = new MonsterMajuHomerun();
-    $game = new Game($monster0, $monster1);
-    $res = $game->fight();
-    if ($res === 0) {
-        $monster0Win++;
-    }
-    
-    if ($index % 100 == 0) {
-        Util::pl($monster0->getName().' wins '.$monster0Win.'/'.$index.' times');
-    }
+    generateLeague([
+        MonsterIkirikamakiri::class,
+        MonsterJanken::class,
+        MonsterMajuHomerun::class,
+        MonsterHukie::class,
+        MonsterGacya::class,
+        MonsterMadoka::class,
+        MonsterNazoegg::class,
+    ]);
+    outputLeague();
 }
 
-Util::pl($monster0->getName().' wins '.$monster0Win.'/'.$index.' times');
-*/
+function doTest($testClass)
+{
+    // ログを詳細に出すか
+    define('IS_LOG', true);
+    
+    Util::logClear();
+
+    $monster0Win = 0;
+
+    for ($index = 0; $index < 50; $index++) {
+        $monster0 = new $testClass();
+        $monster1 = new MonsterMadoka();
+        $game = new Game($monster0, $monster1);
+        $res = $game->fight();
+        if ($res === 0) {
+            $monster0Win++;
+        }
+
+        if ($index % 100 == 0) {
+            Util::pl($monster0->getName().' wins '.$monster0Win.'/'.$index.' times');
+        }
+    }
+
+    Util::pl($monster0->getName().' wins '.$monster0Win.'/'.$index.' times');
+}
 
 function generateLeague($classes)
 {

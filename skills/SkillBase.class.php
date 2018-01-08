@@ -8,6 +8,8 @@ class SkillBase
     ];
     // ダメージ加算
     public $plusAttack = 0;
+    // 変身先
+    public $_transforms = [];
     
     public function __construct($plusAttack = 0)
     {
@@ -64,7 +66,7 @@ class SkillBase
     protected function _heal($amount, MonsterBase $myMonsterObject, MonsterBase $opMonsterObject)
     {
         Util::log('回復：'.$amount);
-        $myMonsterObject->hp += $amount;
+        $myMonsterObject->heal($amount);
         return true;
     }
     
@@ -105,6 +107,37 @@ class SkillBase
         $this->plusAttack += $amount;
         return true;
     }
+    
+    /**
+     * 変身
+     * @param type $ary
+     * @param MonsterBase $myMonsterObject
+     * @param MonsterBase $opMonsterObject
+     * @return boolean
+     */
+    protected function _transform($ary, MonsterBase $myMonsterObject, MonsterBase $opMonsterObject)
+    {
+        list($name, $maxHp, $skillClass) = $ary;
+        Util::log('変身：'.$name);
+        $myMonsterObject->name = $name;
+        $myMonsterObject->hpCap($maxHp);
+        $myMonsterObject->skill = new $skillClass();
+        return true;
+    }
+    
+    /**
+     * 変身先をランダムに返す
+     * @return type
+     */
+    public function getRandomTransform()
+    {
+        if (count($this->_transforms) <= 0) {
+            return null;
+        }
+        
+        return $this->_transforms[mt_rand(0, count($this->_transforms)-1)];
+    }
+
     
     /**
      * 技名を返す
