@@ -22,7 +22,7 @@ class SkillBase
      * @param type $monsterObject
      * @return boolean
      */
-    public function play($dice, MonsterBase $myMonsterObject, MonsterBase $opMonsterObject)
+    public function play($dice, MonsterBase $myMonsterObject, MonsterBase $opMonsterObject, $isBase = true)
     {
         $this->log($dice);
         
@@ -50,9 +50,14 @@ class SkillBase
      * @param type $myMonsterObject
      * @param type $opMonsterObject
      */
-    protected function _attack($amount, MonsterBase $myMonsterObject, MonsterBase $opMonsterObject)
+    protected function _attack($amount, MonsterBase $myMonsterObject, MonsterBase $opMonsterObject, $isBase = true)
     {
         Util::log('ダメージ：'.$amount.($this->plusAttack > 0 ? '[+'.$this->plusAttack.']' : ''));
+        // 実行する側がダメージ系無効
+        if ($isBase && $myMonsterObject->specialEffect->has(SpecialEffect::ITEM_INSTANT_CANNOT_ATTACK)) {
+            Util::log('ダメージ系無効のためノーダメージ');
+            return false;
+        }
         $opMonsterObject->damage($amount + $this->plusAttack);
         return true;
     }
@@ -63,7 +68,7 @@ class SkillBase
      * @param type $myMonsterObject
      * @param type $opMonsterObject
      */
-    protected function _heal($amount, MonsterBase $myMonsterObject, MonsterBase $opMonsterObject)
+    protected function _heal($amount, MonsterBase $myMonsterObject, MonsterBase $opMonsterObject, $isBase = true)
     {
         Util::log('回復：'.$amount);
         $myMonsterObject->heal($amount);
@@ -76,7 +81,7 @@ class SkillBase
      * @param type $myMonsterObject
      * @param type $opMonsterObject
      */
-    protected function _suicide($amount, MonsterBase $myMonsterObject, MonsterBase $opMonsterObject)
+    protected function _suicide($amount, MonsterBase $myMonsterObject, MonsterBase $opMonsterObject, $isBase = true)
     {
         Util::log('自傷：'.$amount.($this->plusAttack > 0 ? '[+'.$this->plusAttack.']' : ''));
         $myMonsterObject->hp -= $amount + $this->plusAttack;
@@ -88,7 +93,7 @@ class SkillBase
      * @param type $myMonsterObject
      * @param type $opMonsterObject
      */
-    protected function _miss(MonsterBase $myMonsterObject, MonsterBase $opMonsterObject)
+    protected function _miss(MonsterBase $myMonsterObject, MonsterBase $opMonsterObject, $isBase = true)
     {
         Util::log('ミス');
         return true;
@@ -101,7 +106,7 @@ class SkillBase
      * @param type $opMonsterObject
      * @return boolean
      */
-    protected function _buffAttack($amount, MonsterBase $myMonsterObject, MonsterBase $opMonsterObject)
+    protected function _buffAttack($amount, MonsterBase $myMonsterObject, MonsterBase $opMonsterObject, $isBase = true)
     {
         Util::log('攻撃力上昇：'.$amount);
         $this->plusAttack += $amount;

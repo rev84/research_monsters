@@ -8,6 +8,7 @@
 class SpecialEffect
 {
     const ITEM_INSTANT_NO_DAMAGE = '1ターン攻撃無効';
+    const ITEM_INSTANT_CANNOT_ATTACK = 'ダメージ系不発';
     
     protected $_ary = [];
     

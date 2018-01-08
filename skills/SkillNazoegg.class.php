@@ -26,7 +26,7 @@ class SkillNazoegg extends SkillBase
      * @param type $opMonsterObject
      * @return boolean
      */
-    public function play($dice, MonsterBase $myMonsterObject, MonsterBase $opMonsterObject)
+    public function play($dice, MonsterBase $myMonsterObject, MonsterBase $opMonsterObject, $isBase = true)
     {
         parent::play($dice, $myMonsterObject, $opMonsterObject);
 
@@ -42,12 +42,12 @@ class SkillNazoegg extends SkillBase
                 return $this->_transform($this->_transforms[2], $myMonsterObject, $opMonsterObject);
             // ぽよんぽよん
             case 4:
-                return $this->_heal(60, $myMonsterObject, $opMonsterObject);
+                return $this->_heal(60, $myMonsterObject, $opMonsterObject, $isBase);
             // 相手の変身先に進化/なければミス
             case 5:
                 $transform = $opMonsterObject->skill->getRandomTransform();
                 if (is_null($transform)) {
-                    return $this->_miss($myMonsterObject, $opMonsterObject);
+                    return $this->_miss($myMonsterObject, $opMonsterObject, $isBase);
                 }
                 else {
                     $this->_transform($transform, $myMonsterObject, $opMonsterObject);
@@ -55,7 +55,7 @@ class SkillNazoegg extends SkillBase
                 
             // もぞもぞ
             case 6:
-                return $this->_miss($myMonsterObject, $opMonsterObject);
+                return $this->_miss($myMonsterObject, $opMonsterObject, $isBase);
         }
         
         return true;

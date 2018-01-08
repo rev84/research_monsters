@@ -20,21 +20,21 @@ class SkillMadokaTear extends SkillBase
      * @param type $opMonsterObject
      * @return boolean
      */
-    public function play($dice, MonsterBase $myMonsterObject, MonsterBase $opMonsterObject)
+    public function play($dice, MonsterBase $myMonsterObject, MonsterBase $opMonsterObject, $isBase = true)
     {
-        parent::play($dice, $myMonsterObject, $opMonsterObject);
+        parent::play($dice, $myMonsterObject, $opMonsterObject, $isBase);
 
         switch ($dice) {
             // 涙が止まらない…
             case 1:
             case 3:
             case 5:
-                return $this->_miss($myMonsterObject, $opMonsterObject);
+                return $this->_miss($myMonsterObject, $opMonsterObject, $isBase);
             // 癒やしの涙
             case 2:
             case 4:
             case 6:
-                return $this->_heal(60, $myMonsterObject, $opMonsterObject);
+                return $this->_heal(60, $myMonsterObject, $opMonsterObject, $isBase);
         }
         
         return true;

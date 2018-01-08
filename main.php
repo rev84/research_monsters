@@ -3,7 +3,7 @@
 require_once dirname(__FILE__).'/autoload.php';
 
 doLeague();
-//doTest(MonsterNazoegg::class);
+//doTest(MonsterNightchan::class);
 
 function doLeague()
 {
@@ -18,6 +18,7 @@ function doLeague()
         MonsterGacya::class,
         MonsterMadoka::class,
         MonsterNazoegg::class,
+        MonsterNightchan::class,
     ]);
     outputLeague();
 }
@@ -33,7 +34,7 @@ function doTest($testClass)
 
     for ($index = 0; $index < 50; $index++) {
         $monster0 = new $testClass();
-        $monster1 = new MonsterMadoka();
+        $monster1 = new MonsterJanken();
         $game = new Game($monster0, $monster1);
         $res = $game->fight();
         if ($res === 0) {
@@ -82,7 +83,7 @@ function generateLeague($classes)
                     $monster0Win++;
                 }
 
-                if ($index % 100 == 0) {
+                if ($index % 1000 == 0) {
                     Util::pl($monster0->getName().' wins '.$monster0Win.'/'.$index.' times');
                 }
             }

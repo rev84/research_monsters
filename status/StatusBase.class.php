@@ -14,7 +14,7 @@ class StatusBase
      * @param type $dice
      * @param type $monsterObject
      */
-    public function play($dice, $monsterObject)
+    public function play($dice, MonsterBase $monsterObject)
     {
         $res = $this->_playMe($dice, $monsterObject);
         if ($res instanceof StatusBase) {
@@ -28,7 +28,7 @@ class StatusBase
      * @param type $monsterObject
      * @return boolean
      */
-    protected function _playMe($dice, $monsterObject)
+    protected function _playMe($dice, MonsterBase $monsterObject)
     {
         switch ($dice) {
             case 1:

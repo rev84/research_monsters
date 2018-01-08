@@ -53,6 +53,7 @@ class MonsterBase
         
         // ステータス異常実行
         $this->playStatus($baseDice);
+        
         /**********************************
          * 技
          **********************************/
@@ -60,12 +61,15 @@ class MonsterBase
         $specialSkill = $this->skill->play($baseDice, $this, $opponentObject);
         // 必殺があればそれも実行
         if ($specialSkill instanceof SkillBase) {
-            $specialSkill->play(Util::dice(), $this, $opponentObject);
+            $specialSkill->play(Util::dice(), $this, $opponentObject, false);
             // 必殺の結果、バフが積まれればそれを反映
             if ($specialSkill->plusAttack > 0) {
                 $this->skill->plusAttack += $specialSkill->plusAttack;
             }
         }
+        
+        // 特殊効果解消
+        $this->specialEffect->remove(SpecialEffect::ITEM_INSTANT_CANNOT_ATTACK);
     }
     
     public function playStatus($dice)

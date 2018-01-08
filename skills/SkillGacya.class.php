@@ -20,9 +20,9 @@ class SkillGacya extends SkillBase
      * @param type $opMonsterObject
      * @return boolean
      */
-    public function play($dice, MonsterBase $myMonsterObject, MonsterBase $opMonsterObject)
+    public function play($dice, MonsterBase $myMonsterObject, MonsterBase $opMonsterObject, $isBase = true)
     {
-        parent::play($dice, $myMonsterObject, $opMonsterObject);
+        parent::play($dice, $myMonsterObject, $opMonsterObject, $isBase);
 
         switch ($dice) {
             // ガチャを回す
@@ -31,35 +31,35 @@ class SkillGacya extends SkillBase
             case 3:
             case 4:
                 // 自傷する
-                $this->_suicide(30, $myMonsterObject, $opMonsterObject);
+                $this->_suicide(30, $myMonsterObject, $opMonsterObject, $isBase);
                 
                 $exDices = [Util::dice(),Util::dice(),Util::dice()];
                 Util::log('ガチャ結果：'.join(',', $exDices));
                 // 6の目が3個出たらSSR!
                 if ($exDices[0] == 6 && $exDices[1] == 6 && $exDices[2] == 6) {
                     Util::log('[SSR]');
-                    return $this->_attack(300, $myMonsterObject, $opMonsterObject);
+                    return $this->_attack(300, $myMonsterObject, $opMonsterObject, $isBase);
                 }
                 // 同じ数字が2個以上出たらSR！
                 elseif (count(array_unique($exDices)) != 3) {
                     Util::log('[SR]');
-                    return $this->_attack(60, $myMonsterObject, $opMonsterObject);
+                    return $this->_attack(60, $myMonsterObject, $opMonsterObject, $isBase);
                 }
                 // 1の目が1個以上出たらR！
                 elseif (array_search(1, $exDices) !== false) {
                     Util::log('[R]');
-                    return $this->_attack(30, $myMonsterObject, $opMonsterObject);
+                    return $this->_attack(30, $myMonsterObject, $opMonsterObject, $isBase);
                 }
                 else {
                     Util::log('[スカ]');
-                    return $this->_miss($myMonsterObject, $opMonsterObject);
+                    return $this->_miss($myMonsterObject, $opMonsterObject, $isBase);
                 }
             // 緊急メンテナンス
             case 5:
-                return $this->_miss($myMonsterObject, $opMonsterObject);
+                return $this->_miss($myMonsterObject, $opMonsterObject, $isBase);
             // 課金
             case 6:
-                return $this->_heal(30, $myMonsterObject, $opMonsterObject);
+                return $this->_heal(30, $myMonsterObject, $opMonsterObject, $isBase);
         }
         
         return true;

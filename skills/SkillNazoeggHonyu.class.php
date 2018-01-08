@@ -26,23 +26,23 @@ class SkillNazoeggHonyu extends SkillBase
      * @param type $opMonsterObject
      * @return boolean
      */
-    public function play($dice, MonsterBase $myMonsterObject, MonsterBase $opMonsterObject)
+    public function play($dice, MonsterBase $myMonsterObject, MonsterBase $opMonsterObject, $isBase = true)
     {
-        parent::play($dice, $myMonsterObject, $opMonsterObject);
+        parent::play($dice, $myMonsterObject, $opMonsterObject, $isBase);
 
         switch ($dice) {
             // 意識が朦朧としている
             case 1:
-                return $this->_miss($myMonsterObject, $opMonsterObject);
+                return $this->_miss($myMonsterObject, $opMonsterObject, $isBase);
             // ニート
             case 2:
                 return $this->_transform($this->_transforms[0], $myMonsterObject, $opMonsterObject);
             // 寝る子は育つ！
             case 3:
-                return $this->_heal(40, $myMonsterObject, $opMonsterObject);
+                return $this->_heal(40, $myMonsterObject, $opMonsterObject, $isBase);
             // いっぱいご飯食べるね！！
             case 4:
-                return $this->_heal(40, $myMonsterObject, $opMonsterObject);
+                return $this->_heal(40, $myMonsterObject, $opMonsterObject, $isBase);
             // 課長
             case 5:
                 return $this->_transform($this->_transforms[1], $myMonsterObject, $opMonsterObject);

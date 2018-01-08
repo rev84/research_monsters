@@ -23,29 +23,29 @@ class SkillNazoeggHaou extends SkillBase
      * @param type $opMonsterObject
      * @return boolean
      */
-    public function play($dice, MonsterBase $myMonsterObject, MonsterBase $opMonsterObject)
+    public function play($dice, MonsterBase $myMonsterObject, MonsterBase $opMonsterObject, $isBase = true)
     {
-        parent::play($dice, $myMonsterObject, $opMonsterObject);
+        parent::play($dice, $myMonsterObject, $opMonsterObject, $isBase);
 
         switch ($dice) {
             // 覇王の傲慢
             case 1:
-                return $this->_miss($myMonsterObject, $opMonsterObject);
+                return $this->_miss($myMonsterObject, $opMonsterObject, $isBase);
             // 覇王アッパー
             case 2:
-                return $this->_attack(40, $myMonsterObject, $opMonsterObject);
+                return $this->_attack(40, $myMonsterObject, $opMonsterObject, $isBase);
             // 覇王の集中
             case 3:
-                return $this->_buffAttack(10, $myMonsterObject, $opMonsterObject);
+                return $this->_buffAttack(10, $myMonsterObject, $opMonsterObject, $isBase);
             // 覇王自己暗示
             case 4:
-                return $this->_heal(50, $myMonsterObject, $opMonsterObject);
+                return $this->_heal(50, $myMonsterObject, $opMonsterObject, $isBase);
             // 覇王カウンター
             case 5:
-                return $this->_attack(50, $myMonsterObject, $opMonsterObject);
+                return $this->_attack(50, $myMonsterObject, $opMonsterObject, $isBase);
             // 覇王ジャブ
             case 6:
-                return $this->_attack(30, $myMonsterObject, $opMonsterObject);
+                return $this->_attack(30, $myMonsterObject, $opMonsterObject, $isBase);
         }
         
         return true;
